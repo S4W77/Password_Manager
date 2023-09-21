@@ -181,13 +181,15 @@ def windows():
                                 print(f"\nPermission denied for deleting '{os.path.basename(file_path)}'\n")
 
                         elif choice in ['7', '07', '007', '0007', '00007', '000007']:
-                            directory = prompt("\nEnter the directory path (skip for current directory): ", completer=completer).strip().replace(' ', '')
-                            def list_files_in_directory(directory="."):
+
+                            directory = input("\nEnter the directory path (skip for current directory): ").strip().replace(' ', '')
+
+                            def ls(directory="."):
                                 try:
                                     with os.scandir(directory) as entries:
-                                        files = [entry.name for entry in entries if entry.is_file()]
-                                        formatted_files = " - ".join(files)
-                                        print(formatted_files)
+                                        files_and_folders = [entry.name for entry in entries]
+                                        formatted_files_and_folders = " - ".join(files_and_folders)
+                                        print(formatted_files_and_folders)
                                 except FileNotFoundError:
                                     print(f"\nDirectory '{directory}' not found\n")
                                 except PermissionError:
@@ -196,7 +198,7 @@ def windows():
                             if not directory:
                                 directory = "."
                             print("")
-                            list_files_in_directory(directory)
+                            ls(directory)
                             print("")
                         elif choice in ['8', '08', '008', '0008', '00008', '000008']:
                             is_running = True

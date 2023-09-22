@@ -20,7 +20,7 @@ def windows():
                     import pyfiglet
 
                     font = pyfiglet.Figlet()
-                    CRD = font.renderText(f"\n        {os.path.basename(__file__)}")
+                    CRD = font.renderText("\n        " + os.path.basename(__file__))
 
                     completer = PathCompleter()
                 
@@ -110,9 +110,9 @@ def windows():
                                     print("Encrypted Password:", base64.b64encode(encrypted_password).decode() + "\n")
                                     break
                                 except FileNotFoundError:
-                                    print(f"File '{os.path.basename(file_path)}' not found. Please provide a valid file path.\n")
+                                    print("File '"+os.path.basename(file_path)+"' not found. Please provide a valid file path.\n")
                                 except PermissionError:
-                                    print(f"\nPermission denied for saving ecnrypted password in '{os.path.basename(file_path)}'\n")
+                                    print("\nPermission denied for saving ecnrypted password in '"+os.path.basename(file_path)+"'\n")
 
                         elif choice in ['3', '03', '003', '0003', '00003', '000003']:
                             file_path = prompt("\nEnter the file path with the encrypted passwords: " , completer=completer, complete_while_typing=True)
@@ -123,13 +123,13 @@ def windows():
                                 for entry in encrypted_passwords:
                                     encryption_key = base64.b64decode(entry['encryption_key'])
                                     decrypted_password = decrypt_password(entry, encryption_key)
-                                    print(f"{counter} - Key: {decrypted_password}")
+                                    print(counter+" - Key: "+decrypted_password)
                                     counter += 1
                                 print('')
                             except FileNotFoundError:
-                                print(f"File '{os.path.basename(file_path)}' not found.\n")
+                                print("File '"+os.path.basename(file_path)+"' not found.\n")
                             except PermissionError:
-                                print(f"\nPermission denied for decrypting passwords in '{os.path.basename(file_path)}'\n")
+                                print("\nPermission denied for decrypting passwords in '"+os.path.basename(file_path)+"'\n")
 
                         elif choice in ['4', '04', '004', '0004', '00004', '000004']:
                             file_path = prompt("\nEnter the file path to read: " , completer=completer, complete_while_typing=True)
@@ -146,9 +146,9 @@ def windows():
                                 else:
                                     print("\nUnssuported format, We only support .txt format\n")
                             except FileNotFoundError:
-                                print(f"\nNo file as '{os.path.basename(file_path)}' was found\n")
+                                print("\nNo file as '"+os.path.basename(file_path)+"' was found\n")
                             except PermissionError:
-                                print(f"\nPermission denied for reading '{os.path.basename(file_path)}'\n")
+                                print("\nPermission denied for reading '"+os.path.basename(file_path)+"'\n")
                         elif choice in ['5', '05', '005', '0005', '00005', '000005']:
                             file_path = prompt("\nEnter the file path to clear: " , completer=completer, complete_while_typing=True)
                             try:
@@ -157,28 +157,28 @@ def windows():
                                         f = file.read()
                                         if f:
                                             open(file_path, 'w').close()
-                                            print(f"\nSuccessfully cleared '{os.path.basename(file_path)}'\n")
+                                            print("\nSuccessfully cleared '"+os.path.basename(file_path)+"'\n")
                                         else:
                                             print("\nFile is empty, Nothing to clear\n")
                                         file.close()
                                 else:
                                     print("\nUnssuported format, We only support .txt format\n")
                             except FileNotFoundError:
-                                print(f"\nNo file as '{os.path.basename(file_path)}' was found\n")
+                                print("\nNo file as '"+os.path.basename(file_path)+"' was found\n")
                             except PermissionError:
-                                print(f"\nPermission denied for clearing '{os.path.basename(file_path)}'\n")
+                                print("\nPermission denied for clearing '"+os.path.basename(file_path)+"'\n")
                         elif choice in ['6', '06', '006', '0006', '00006', '000006']:
                             file_path = prompt("\nEnter the file path to delete: " , completer=completer, complete_while_typing=True)
                             try:
                                 if file_path.endswith('.txt'):
                                     os.remove(file_path)
-                                    print(f"\nSuccessfully deleted '{os.path.basename(file_path)}'\n")
+                                    print("\nSuccessfully deleted '"+os.path.basename(file_path)+"'\n")
                                 else:
                                     print("\nUnssuported format, We only support .txt format\n")
                             except FileNotFoundError:
-                                print(f"\nNo file such as '{os.path.basename(file_path)}' was found\n")
+                                print("\nNo file such as '"+os.path.basename(file_path)+"' was found\n")
                             except PermissionError:
-                                print(f"\nPermission denied for deleting '{os.path.basename(file_path)}'\n")
+                                print("\nPermission denied for deleting '"+os.path.basename(file_path)+"'\n")
 
                         elif choice in ['7', '07', '007', '0007', '00007', '000007']:
 
@@ -191,9 +191,9 @@ def windows():
                                         formatted_files_and_folders = " - ".join(files_and_folders)
                                         print(formatted_files_and_folders)
                                 except FileNotFoundError:
-                                    print(f"\nDirectory '{directory}' not found\n")
+                                    print("\nDirectory '"+directory+"' not found\n")
                                 except PermissionError:
-                                    print(f"\nPermission denied for directory '{directory}'\n")
+                                    print("\nPermission denied for directory '"+directory+"'\n")
 
                             if not directory:
                                 directory = "."
@@ -221,18 +221,27 @@ def windows():
                             print("Invalid choice. Please select a valid option.\n")
 
                     except Exception as e:
-                        print(f"\nAn error has occurred: {e}\n")
+                        print("\nAn error has occurred: "+e+"\n")
 
             try:
                 if __name__ == "__main__":
                     encrypt()
 
             except Exception as e:
-                print(f"\nAn error has occured while loading the script : {e}\n")
+                print("\nAn error has occured while loading the script : "+e+"\n")
 
-        if sys.version_info < (3, 8):
-            print("\nError: This script requires Python 3.8.x or higher to run.\n")
-            sys.exit(1)
+        if sys.version_info >= (3, 0):
+            the_block()
+        else:
+            import sys
+            try:
+                action = raw_input("\nYou are using Python " + str(sys.version_info.major)+"."+str(sys.version_info.minor)+"."+str(sys.version_info.micro)+", You need at least version 3 of Python to execute this script. Press [Enter] to exit ").lower()
+                print('')
+                sys.exit(1)
+
+            except Exception as e:
+                print(e)
+
         
         def check_dependencies(required_packages):
             missing_packages = []
@@ -262,7 +271,7 @@ def windows():
             print("\nMissing packages:\n")
             for package, probable_package in missing_packages:
                 count += 1
-                print(f'{count}- Package: "{package}" | Probable package name: "{probable_package}"')
+                print(str(count)+'- Package: "'+package+'" | Probable package name: "'+probable_package+'"')
             def ask_installation(probable_package):
                 pip = input("\nWould you like to install the missing packages [1-y/2-n]: ").lower().strip()
                 if pip in ['1', 'y', 'yes', 'ye', 'yeah', 'yup', 'yea', 'yeh']:
@@ -274,7 +283,7 @@ def windows():
                                     subprocess.run(['pip', 'install'] + [p[1] for p in missing_packages], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
                                     print("\nSuccessfully installed the missing packages!\n")
                                 except subprocess.CalledProcessError as e:
-                                    print(f"An error has occurred during installation: {e.stderr}\n")
+                                    print("An error has occurred during installation: "+e.stderr+"\n")
                                 import time
                                 time.sleep(0.5)
                                 import os
@@ -283,7 +292,7 @@ def windows():
 
                             install()
                         except Exception as e:
-                            print(f"An error has occured: {e}")
+                            print("\nAn error has occured: "+e+"\n")
                     install()
                 elif pip in ['2', 'n', 'no', 'nah', 'nope', 'na']:
                     import os
@@ -308,28 +317,132 @@ def windows():
             the_block()
 
     except KeyboardInterrupt:
+        import os
+        import sys
+        python_version = str(sys.version_info.major)+"."+str(sys.version_info.minor)+"."+str(sys.version_info.micro)
         def handle_keyboard_interrupt():
-            try:
-                response = input("\nInterruption detected, Would you like to exit [1-y/2-n]: ").strip().lower().replace(" ", "")
-                if response in ['1', 'y', 'yes', 'ye', 'yeah', 'yup', 'yea', 'yeh']:
-                    print("\nQuitting...")
-                    print('')
-                    os._exit(1)
-                elif response in ['2', 'n', 'no', 'nah', 'nope', 'na']:
-                    print('')
-                    the_block()
-                else:
-                    print(f'\nUnsupported response: "{response}"')
+            if sys.version_info >= (3, 0):
+                try:
+                    response = input("\nInterruption detected, Would you like to exit [1-y/2-n]: ").strip().lower().replace(" ", "")
+                    if response in ['1', 'y', 'yes', 'ye', 'yeah', 'yup', 'yea', 'yeh']:
+                        print("\nQuitting...")
+                        print('')
+                        os._exit(1)
+                    elif response in ['2', 'n', 'no', 'nah', 'nope', 'na']:
+                        print('')
+                        the_block()
+                    else:
+                        print('\nUnsupported response: "'+response+'"')
+                        return handle_keyboard_interrupt()
+                except KeyboardInterrupt:
                     return handle_keyboard_interrupt()
-            except KeyboardInterrupt:
-                return handle_keyboard_interrupt()
+            else:
+                try:
+                    response = raw_input("\nInterruption detected, Would you like to exit [1-y/2-n]: ").strip().lower().replace(" ", "")
+                    if response in ['1', 'y', 'yes', 'ye', 'yeah', 'yup', 'yea', 'yeh']:
+                        print("\nQuitting...")
+                        print('')
+                        os._exit(1)
+                    elif response in ['2', 'n', 'no', 'nah', 'nope', 'na']:
+                        print('')
+                    else:
+                        print('\nUnsupported response: "'+response+'"')
+                        return handle_keyboard_interrupt()
+                except KeyboardInterrupt:
+                    return handle_keyboard_interrupt()
+
+                print("Sorry but you will have to exit anyway, you need atleast version 3 of Python to run this program but you are using Python " + python_version)
+                raw_input("\nPress [Enter] to exit ")
+                sys.exit(1)
 
         handle_keyboard_interrupt()
 
 if __name__ == "__main__":
+
     import platform
+    import sys
+    import os
     current_os = platform.system()
     if current_os == "Windows":
-        windows()
+        try:
+            windows()
+        except KeyboardInterrupt:
+            def handle_keyboard_interrupt():
+                if sys.version_info >= (3, 0):
+                    try:
+                        response = input("\nInterruption detected, Would you like to exit [1-y/2-n]: ").strip().lower().replace(" ", "")
+                        if response in ['1', 'y', 'yes', 'ye', 'yeah', 'yup', 'yea', 'yeh']:
+                            print("\nQuitting...")
+                            print('')
+                            os._exit(1)
+                        elif response in ['2', 'n', 'no', 'nah', 'nope', 'na']:
+                            print('')
+                            windows()
+                        else:
+                            print('\nUnsupported response: "'+response+'"')
+                            return handle_keyboard_interrupt()
+
+                    except KeyboardInterrupt:
+                        return handle_keyboard_interrupt()
+                else:
+                    try:
+                        response = raw_input("\nInterruption detected, Would you like to exit [1-y/2-n]: ").strip().lower().replace(" ", "")
+                        if response in ['1', 'y', 'yes', 'ye', 'yeah', 'yup', 'yea', 'yeh']:
+                            print("\nQuitting...")
+                            print('')
+                            os._exit(1)
+                        elif response in ['2', 'n', 'no', 'nah', 'nope', 'na']:
+                            print('')
+                            windows()
+                        else:
+                            print('\nUnsupported response: "'+response+'"')
+                            return handle_keyboard_interrupt()
+                    except KeyboardInterrupt:
+                        return handle_keyboard_interrupt()
+
+            handle_keyboard_interrupt()
+        except Exception as e:
+            print(e)
     else:
-        print("The current operating system is not Windows. Please reconsider using Windows to execute this script.")
+        try:
+            def not_windows():
+                return "\nThe current operating system is not Windows. Please reconsider using Windows to execute this script."
+            print(not_windows())
+            exitting = input("Press [Enter] to exit ")
+            print('')
+        except KeyboardInterrupt:
+            import os
+            def handle_keyboard_interrupt():
+                if sys.version_info >= (3, 0):
+                    try:
+                        response = input("\nInterruption detected, Would you like to exit [1-y/2-n]: ").strip().lower().replace(" ", "")
+                        if response in ['1', 'y', 'yes', 'ye', 'yeah', 'yup', 'yea', 'yeh']:
+                            print("\nQuitting...")
+                            print('')
+                            os._exit(1)
+                        elif response in ['2', 'n', 'no', 'nah', 'nope', 'na']:
+                            print('')
+                            windows()
+                        else:
+                            print('\nUnsupported response: "'+response+'"')
+                            return handle_keyboard_interrupt()
+
+                    except KeyboardInterrupt:
+                        return handle_keyboard_interrupt()
+                else:
+                    try:
+                        response = raw_input("\nInterruption detected, Would you like to exit [1-y/2-n]: ").strip().lower().replace(" ", "")
+                        if response in ['1', 'y', 'yes', 'ye', 'yeah', 'yup', 'yea', 'yeh']:
+                            print("\nQuitting...")
+                            print('')
+                            os._exit(1)
+                        elif response in ['2', 'n', 'no', 'nah', 'nope', 'na']:
+                            print('')
+                            windows()
+                        else:
+                            print('\nUnsupported response: "'+response+'"')
+                            return handle_keyboard_interrupt()
+                    except KeyboardInterrupt:
+                        return handle_keyboard_interrupt()
+
+            handle_keyboard_interrupt()

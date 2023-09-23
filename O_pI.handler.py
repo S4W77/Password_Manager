@@ -123,7 +123,7 @@ def windows():
                                 for entry in encrypted_passwords:
                                     encryption_key = base64.b64decode(entry['encryption_key'])
                                     decrypted_password = decrypt_password(entry, encryption_key)
-                                    print(counter+" - Key: "+decrypted_password)
+                                    print(str(counter)+" - Key: "+decrypted_password)
                                     counter += 1
                                 print('')
                             except FileNotFoundError:
@@ -201,12 +201,10 @@ def windows():
                             ls(directory)
                             print("")
                         elif choice in ['8', '08', '008', '0008', '00008', '000008']:
-                            is_running = True
                             print("\nReloading script...\n")
                             time.sleep(0.5)
                             os.system("cls")
                             subprocess.run(["python", __file__])
-                            is_running = False
                             return
 
                         elif choice == "99":
@@ -231,7 +229,7 @@ def windows():
                 print("\nAn error has occured while loading the script : "+e+"\n")
 
         if sys.version_info >= (3, 0):
-            the_block()
+            pass
         else:
             import sys
             try:
@@ -319,6 +317,7 @@ def windows():
     except KeyboardInterrupt:
         import os
         import sys
+        import subprocess
         python_version = str(sys.version_info.major)+"."+str(sys.version_info.minor)+"."+str(sys.version_info.micro)
         def handle_keyboard_interrupt():
             if sys.version_info >= (3, 0):
@@ -327,7 +326,6 @@ def windows():
                     if response in ['1', 'y', 'yes', 'ye', 'yeah', 'yup', 'yea', 'yeh']:
                         print("\nQuitting...")
                         print('')
-                        os._exit(1)
                     elif response in ['2', 'n', 'no', 'nah', 'nope', 'na']:
                         print('')
                         the_block()
@@ -336,6 +334,8 @@ def windows():
                         return handle_keyboard_interrupt()
                 except KeyboardInterrupt:
                     return handle_keyboard_interrupt()
+                finally:
+                    os._exit(1)
             else:
                 try:
                     response = raw_input("\nInterruption detected, Would you like to exit [1-y/2-n]: ").strip().lower().replace(" ", "")

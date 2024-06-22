@@ -89,15 +89,15 @@ def windows():
                     try:
                         options()
 
-                        choice = input("Enter your option: ").strip().lower().replace(" ", "")
+                        choice = int(input("Enter your option: ").strip().lower().replace(" ", ""))
 
-                        if choice in ['0', '00', '000', '0000', '00000', '000000']:
+                        if choice == 0:
                             print("\nQuitting...")
                             print('')
                             os._exit(1)
-                        elif choice in ['1', '01', '001', '0001', '00001', '000001']:
+                        elif choice == 1:
                             clear()
-                        elif choice in ['2', '02', '002', '0002', '00002', '000002']:
+                        elif choice == 2:
                             password = input("\nEnter the password to encrypt: ")
                             salt = get_random_bytes(16)
                             encryption_key = derive_key_from_password(password.encode(), salt)
@@ -114,7 +114,7 @@ def windows():
                                 except PermissionError:
                                     print("\nPermission denied for saving ecnrypted password in '"+os.path.basename(file_path)+"'\n")
 
-                        elif choice in ['3', '03', '003', '0003', '00003', '000003']:
+                        elif choice == 3:
                             file_path = prompt("\nEnter the file path with the encrypted passwords: " , completer=completer, complete_while_typing=True)
                             try:
                                 encrypted_passwords = load_encrypted_passwords(file_path)
@@ -131,7 +131,7 @@ def windows():
                             except PermissionError:
                                 print("\nPermission denied for decrypting passwords in '"+os.path.basename(file_path)+"'\n")
 
-                        elif choice in ['4', '04', '004', '0004', '00004', '000004']:
+                        elif choice == 4:
                             file_path = prompt("\nEnter the file path to read: " , completer=completer, complete_while_typing=True)
                             try:
                                 if file_path.endswith('.txt'):
@@ -149,7 +149,7 @@ def windows():
                                 print("\nNo file as '"+os.path.basename(file_path)+"' was found\n")
                             except PermissionError:
                                 print("\nPermission denied for reading '"+os.path.basename(file_path)+"'\n")
-                        elif choice in ['5', '05', '005', '0005', '00005', '000005']:
+                        elif choice == 5:
                             file_path = prompt("\nEnter the file path to clear: " , completer=completer, complete_while_typing=True)
                             try:
                                 if file_path.endswith('.txt'):
@@ -167,7 +167,7 @@ def windows():
                                 print("\nNo file as '"+os.path.basename(file_path)+"' was found\n")
                             except PermissionError:
                                 print("\nPermission denied for clearing '"+os.path.basename(file_path)+"'\n")
-                        elif choice in ['6', '06', '006', '0006', '00006', '000006']:
+                        elif choice == 6:
                             file_path = prompt("\nEnter the file path to delete: " , completer=completer, complete_while_typing=True)
                             try:
                                 if file_path.endswith('.txt'):
@@ -180,7 +180,7 @@ def windows():
                             except PermissionError:
                                 print("\nPermission denied for deleting '"+os.path.basename(file_path)+"'\n")
 
-                        elif choice in ['7', '07', '007', '0007', '00007', '000007']:
+                        elif choice == 7:
 
                             directory = input("\nEnter the directory path (skip for current directory): ").strip().replace(' ', '')
 
@@ -200,14 +200,15 @@ def windows():
                             print("")
                             ls(directory)
                             print("")
-                        elif choice in ['8', '08', '008', '0008', '00008', '000008']:
+                        elif choice == 8:
+                            import time
                             print("\nReloading script...\n")
                             time.sleep(0.5)
                             os.system("cls")
                             subprocess.run(["python", __file__])
                             return
 
-                        elif choice == "99":
+                        elif choice == 99:
                             clear()
                             print(CRD)
                             print("\n\tDeveloper: SpiringCord\n")
@@ -264,55 +265,60 @@ def windows():
 
         missing_packages = check_dependencies(required_packages)
 
-        if missing_packages:
-            count = 0
-            print("\nMissing packages:\n")
-            for package, probable_package in missing_packages:
-                count += 1
-                print(str(count)+'- Package: "'+package+'" | Probable package name: "'+probable_package+'"')
-            def ask_installation(probable_package):
-                pip = input("\nWould you like to install the missing packages [1-y/2-n]: ").lower().strip()
-                if pip in ['1', 'y', 'yes', 'ye', 'yeah', 'yup', 'yea', 'yeh']:
-                    def install():
-                        try:
-                            def install():
-                                try:
-                                    import subprocess
-                                    subprocess.run(['pip', 'install'] + [p[1] for p in missing_packages], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
-                                    print("\nSuccessfully installed the missing packages!\n")
-                                except subprocess.CalledProcessError as e:
-                                    print("An error has occurred during installation: "+e.stderr+"\n")
-                                import time
-                                time.sleep(0.5)
-                                import os
-                                os.system('cls')
-                                the_block()
+        def install_packages(missing_packages):
+            if missing_packages:
+                count = 0
+                print("\nMissing packages:\n")
+                for package, probable_package in missing_packages:
+                    count += 1
+                    print(str(count)+'- Package: "'+package+'" | Probable package name: "'+probable_package+'"')
+                def ask_installation(probable_package):
+                    pip = input("\nWould you like to install the missing packages [1-y/2-n]: ").lower().strip()
+                    if pip in ['1', 'y', 'yes', 'ye', 'yeah', 'yup', 'yea', 'yeh']:
+                        def install():
+                            try:
+                                def install():
+                                    try:
+                                        import subprocess
+                                        subprocess.run(['pip', 'install'] + [p[1] for p in missing_packages], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+                                        print("\nSuccessfully installed the missing packages!\n")
+                                    except subprocess.CalledProcessError as e:
+                                        print("An error has occurred during installation: "+e.stderr+"\n")
+                                    import time
+                                    time.sleep(0.5)
+                                    import os
+                                    os.system('cls')
+                                    the_block()
 
-                            install()
-                        except Exception as e:
-                            print("\nAn error has occured: "+e+"\n")
-                    install()
-                elif pip in ['2', 'n', 'no', 'nah', 'nope', 'na']:
-                    import os
-                    os._exit(1)
-                else:
-                    return ask_installation(probable_package)
+                                install()
+                            except Exception as e:
+                                print("\nAn error has occured: "+e+"\n")
+                                time.sleep(1.5)
+                                sys.exit(1)
+                        install()
+                    elif pip in ['2', 'n', 'no', 'nah', 'nope', 'na']:
+                        import os
+                        os._exit(1)
+                    else:
+                        return ask_installation(probable_package)
 
-            for package, probable_package in missing_packages:
-                ask_installation(probable_package)
-        else:
-            import os
-            import time
-            def clear():
-                os.system("cls")
-            def sleep():
-                time.sleep(0.5)
-            clear()
-            sleep()
-            print('')
-            print("\nAll required packages are installed. Script can proceed\n")
-            sleep()
-            the_block()
+                for package, probable_package in missing_packages:
+                    ask_installation(probable_package)
+            else:
+                import os
+                import time
+                def clear():
+                    os.system("cls")
+                def sleep():
+                    time.sleep(0.5)
+                clear()
+                sleep()
+                print('')
+                print("\nAll required packages are installed. Script can proceed\n")
+                sleep()
+                the_block()
+
+        install_packages(missing_packages)
 
     except KeyboardInterrupt:
         import os
